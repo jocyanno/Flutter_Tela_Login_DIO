@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trilhaapp/pages/main_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -136,9 +137,16 @@ class _LoginPageState extends State<LoginPage> {
                               if (emailController.text.trim() ==
                                       "email@email.com" &&
                                   senhaController.text.trim() == '123') {
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login efetuado com sucesso')));
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainPage()));
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro ao efetuar o login')));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Erro ao efetuar o login')));
                               }
                             },
                             style: ButtonStyle(
