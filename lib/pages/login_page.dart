@@ -8,7 +8,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  
+  var emailController = TextEditingController(text: "");
+  var senhaController = TextEditingController(text: "");
+  bool isObscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,9 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                         horizontal: 30, vertical: 10),
                     height: 30,
                     alignment: Alignment.center,
-                    child: const TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
+                    child: TextField(
+                      controller: emailController,
+                      onChanged: (value) {},
+                      style: const TextStyle(color: Colors.white),
+                      decoration: const InputDecoration(
                         contentPadding: EdgeInsets.only(top: 0),
                         enabledBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -85,25 +90,37 @@ class _LoginPageState extends State<LoginPage> {
                           horizontal: 30, vertical: 10),
                       height: 30,
                       alignment: Alignment.center,
-                      child: const TextField(
-                        style: TextStyle(color: Colors.white),
+                      child: TextField(
+                        controller: senhaController,
+                        obscureText: isObscureText,
+                        onChanged: (value) {},
+                        style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
+                            enabledBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color.fromARGB(255, 141, 79, 151))),
-                            focusedBorder: UnderlineInputBorder(
+                            focusedBorder: const UnderlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color.fromARGB(255, 141, 79, 151))),
                             hintText: "Senha",
-                            hintStyle:
-                                TextStyle(color: Colors.white, fontSize: 14),
-                            prefixIcon: Icon(
+                            hintStyle: const TextStyle(
+                                color: Colors.white, fontSize: 14),
+                            prefixIcon: const Icon(
                               Icons.lock,
                               color: Color.fromARGB(255, 141, 79, 151),
                             ),
-                            suffixIcon: Icon(
-                              Icons.visibility,
-                              color: Color.fromARGB(255, 141, 79, 151),
+                            suffixIcon: InkWell(
+                              onTap: () {
+                                setState(() {
+                                  isObscureText = !isObscureText;
+                                });
+                              },
+                              child: Icon(
+                                isObscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: const Color.fromARGB(255, 141, 79, 151),
+                              ),
                             )),
                       )),
                   const SizedBox(height: 40),
@@ -115,7 +132,15 @@ class _LoginPageState extends State<LoginPage> {
                     child: SizedBox(
                         width: double.infinity,
                         child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              if (emailController.text.trim() ==
+                                      "email@email.com" &&
+                                  senhaController.text.trim() == '123') {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Login efetuado com sucesso')));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Erro ao efetuar o login')));
+                              }
+                            },
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
